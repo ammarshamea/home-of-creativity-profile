@@ -1,0 +1,140 @@
+@import "tailwindcss";
+
+:root {
+  --brand-purple: #2e0e5c;
+  --brand-purple-deep: #1a0838;
+  --brand-orange: #e7993a;
+  --brand-orange-soft: #f0b56a;
+  --brand-teal: #2bb5a8;
+  --brand-teal-deep: #1a7f78;
+  --brand-charcoal: #121212;
+  --brand-ink: #1a1224;
+  --brand-off-white: #f6f1e8;
+  --brand-cream: #fbf7f0;
+  --brand-paper: #f3eee4;
+  --brand-muted: #6b6178;
+  --brand-line: color-mix(in srgb, var(--brand-ink) 12%, transparent);
+  --font-en: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-ar: var(--font-ibm-plex-arabic), var(--font-inter), sans-serif;
+  --font-script: var(--font-great-vibes), cursive;
+  --logo-path: /hummingbird.svg;
+  --nav-height: 4.5rem;
+  --page-pad: clamp(1.25rem, 4vw, 4.5rem);
+  --content: min(1180px, calc(100% - var(--page-pad) * 2));
+}
+
+@theme inline {
+  --color-purple: var(--brand-purple);
+  --color-orange: var(--brand-orange);
+  --color-teal: var(--brand-teal);
+  --color-charcoal: var(--brand-charcoal);
+  --color-ink: var(--brand-ink);
+  --color-offwhite: var(--brand-off-white);
+  --color-cream: var(--brand-cream);
+  --font-sans: var(--font-en);
+  --font-arabic: var(--font-ar);
+  --font-script: var(--font-script);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--brand-off-white);
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--brand-ink);
+  background: var(--brand-off-white);
+  font-family: var(--font-en);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+html[lang="ar"] body,
+html[lang="ar"] {
+  font-family: var(--font-ar);
+}
+
+html[lang="ar"] .font-display {
+  letter-spacing: -0.02em;
+}
+
+::selection {
+  background: var(--brand-orange);
+  color: var(--brand-purple-deep);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.font-script {
+  font-family: var(--font-script);
+}
+
+.font-display {
+  font-family: var(--font-en);
+  letter-spacing: -0.035em;
+}
+
+html[lang="ar"] .font-display {
+  font-family: var(--font-ar);
+}
+
+.grain {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  opacity: 0.045;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.radial-burst {
+  background: repeating-conic-gradient(
+    from 200deg at 0% 0%,
+    rgb(255 255 255 / 0.14) 0deg,
+    transparent 0.35deg,
+    transparent 4.2deg
+  );
+}
+
+.number-field {
+  background-image: radial-gradient(
+      circle at 12% 20%,
+      rgb(46 14 92 / 0.04) 0 1px,
+      transparent 1.5px
+    ),
+    radial-gradient(circle at 80% 70%, rgb(231 153 58 / 0.05) 0 1px, transparent 1.5px);
+  background-size: 28px 28px, 36px 36px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
