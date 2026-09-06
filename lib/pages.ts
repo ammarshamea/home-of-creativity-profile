@@ -1,5 +1,7 @@
+import { withBasePath } from "./base-path";
+
 export const page = (n: number) =>
-  `/profile-pages/page-${String(n).padStart(2, "0")}.jpg`;
+  withBasePath(`/profile-pages/page-${String(n).padStart(2, "0")}.jpg`);
 
 export const PAGES = {
   cover: page(1),

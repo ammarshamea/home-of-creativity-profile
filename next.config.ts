@@ -1,12 +1,10 @@
 import type { NextConfig } from "next";
-
-const repo = "home-of-creativity-profile";
-const basePath = `/${repo}`;
+import { BASE_PATH } from "./lib/base-path";
 
 const nextConfig: NextConfig = {
   output: "export",
-  basePath,
-  assetPrefix: basePath,
+  basePath: BASE_PATH,
+  assetPrefix: BASE_PATH,
   trailingSlash: true,
   images: {
     unoptimized: true,

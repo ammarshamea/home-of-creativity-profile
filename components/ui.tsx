@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { cn } from "@/lib/cn";
+import { withBasePath } from "@/lib/base-path";
 import { useLanguage, type Copy } from "@/lib/i18n";
 import { ParallaxFrame, Reveal } from "./motion";
 
@@ -80,7 +81,7 @@ export function Frame({
 }) {
   const image = (
     <Image
-      src={src}
+      src={withBasePath(src)}
       alt={alt}
       fill
       sizes={sizes}
