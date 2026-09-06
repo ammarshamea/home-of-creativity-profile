@@ -2,10 +2,9 @@
 
 import { services } from "@/lib/content";
 import { useLanguage } from "@/lib/i18n";
-import { PAGES } from "@/lib/pages";
 import { Hummingbird, Wordmark } from "../brand";
 import { Reveal, Stagger, StaggerItem } from "../motion";
-import { Frame, SectionHeading, Shell } from "../ui";
+import { SectionHeading, Shell } from "../ui";
 import { cn } from "@/lib/cn";
 
 const tones = {
@@ -30,7 +29,7 @@ export function Services() {
           <Wordmark invert size="sm" />
         </Reveal>
         <Reveal className="mx-auto mb-14 max-w-2xl text-center">
-          <SectionHeading index={services.index} title={services.title} invert />
+          <SectionHeading kicker={services.kicker} title={services.title} invert />
           <p className="mt-5 text-white/70">{t(services.lead)}</p>
         </Reveal>
 
@@ -41,9 +40,9 @@ export function Services() {
             return (
               <StaggerItem key={item.id}>
                 <a
-                  href={item.href}
+                  href={item.id === "finance" ? "#finance" : "#projects"}
                   className={cn(
-                    "inline-flex items-center overflow-hidden rounded-full shadow-[0_10px_30px_rgb(10_6_24/0.24)]",
+                    "inline-flex items-center overflow-hidden rounded-full shadow-[0_10px_30px_rgb(10_6_24/0.24)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-orange)]",
                     i % 3 === 0 && "md:-rotate-2",
                     i % 3 === 1 && "md:rotate-1",
                     i % 3 === 2 && "md:rotate-2",
@@ -65,15 +64,6 @@ export function Services() {
             );
           })}
         </Stagger>
-
-        <Reveal className="mt-16">
-          <Frame
-            src={PAGES.services}
-            alt={t(services.title)}
-            className="aspect-[16/9] w-full"
-            sizes="100vw"
-          />
-        </Reveal>
       </Shell>
     </section>
   );

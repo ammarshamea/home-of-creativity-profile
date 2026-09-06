@@ -24,9 +24,9 @@ const greatVibes = Great_Vibes({
 });
 
 export const metadata: Metadata = {
-  title: "Home of Creativity — Creativation Source",
+  title: "Home of Creativity — Brand Architects",
   description:
-    "Brand architects. Premium Minimalism and human-centric marketing for Syria and Saudi Arabia.",
+    "Home of Creativity (Creativation Source) — brand architects. Premium Minimalism and human-centric marketing in Syria and Saudi Arabia.",
 };
 
 export default function RootLayout({

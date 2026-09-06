@@ -42,7 +42,12 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--nav-height) + 0.75rem);
   background: var(--brand-off-white);
+}
+
+section[id] {
+  scroll-margin-top: calc(var(--nav-height) + 0.75rem);
 }
 
 html,
@@ -73,9 +78,11 @@ html[lang="ar"] .font-display {
   color: var(--brand-purple-deep);
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+@layer base {
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 }
 
 img {
