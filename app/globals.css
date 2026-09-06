@@ -17,7 +17,7 @@
   --font-en: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-ar: var(--font-ibm-plex-arabic), var(--font-inter), sans-serif;
   --font-script: var(--font-great-vibes), cursive;
-  --logo-path: /hummingbird.svg;
+  --logo-path: /home-of-creativity-profile/hummingbird.svg;
   --nav-height: 4.5rem;
   --page-pad: clamp(1.25rem, 4vw, 4.5rem);
   --content: min(1180px, calc(100% - var(--page-pad) * 2));
