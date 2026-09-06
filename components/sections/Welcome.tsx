@@ -54,8 +54,8 @@ export function Welcome() {
                 <span className="text-[var(--brand-orange)]">source</span>
               </p>
             </div>
-            <span className="absolute -end-4 top-10 grid h-20 w-20 place-items-center rounded-full border border-[var(--brand-orange)]">
-              <Hummingbird className="h-10 w-16 [transform:scaleX(-1)]" />
+            <span className="absolute -end-4 top-10 grid h-20 w-20 place-items-center rounded-full border border-[var(--brand-orange)] bg-[var(--brand-purple)]">
+              <Hummingbird className="h-9 w-14" />
             </span>
           </div>
         </Reveal>

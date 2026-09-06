@@ -25,8 +25,8 @@ export function LanguageToggle({ compact = false }: { compact?: boolean }) {
       onClick={() => setLocale(locale === "en" ? "ar" : "en")}
       aria-label={t(nav.language)}
       className={cn(
-        "relative isolate overflow-hidden rounded-full border border-[color-mix(in_srgb,var(--brand-cream)_28%,transparent)] bg-[color-mix(in_srgb,var(--brand-purple)_55%,black)] px-1 py-1 text-[0.72rem] font-semibold tracking-[0.18em] uppercase text-[var(--brand-cream)]",
-        compact ? "min-w-[5.6rem]" : "min-w-[6.4rem]",
+        "relative isolate shrink-0 overflow-hidden rounded-full border border-white/25 bg-black/25 px-1 py-1 text-[0.7rem] font-semibold tracking-[0.16em] uppercase text-[var(--brand-cream)]",
+        compact ? "min-w-[5.4rem]" : "min-w-[6.2rem]",
       )}
     >
       <span className="relative z-10 grid grid-cols-2">
@@ -35,7 +35,7 @@ export function LanguageToggle({ compact = false }: { compact?: boolean }) {
             key={code}
             className={cn(
               "relative px-2.5 py-1.5 transition-colors",
-              locale === code ? "text-[var(--brand-purple-deep)]" : "text-white/70",
+              locale === code ? "text-[var(--brand-purple-deep)]" : "text-white/75",
             )}
           >
             {locale === code ? (
@@ -69,26 +69,33 @@ export function Nav() {
     setOpen(false);
   }, [locale]);
 
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
   return (
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-[background,box-shadow,backdrop-filter] duration-500",
         scrolled || open
-          ? "bg-[color-mix(in_srgb,var(--brand-purple-deep)_86%,transparent)] shadow-[0_12px_40px_rgb(10_6_24/0.28)] backdrop-blur-xl"
-          : "bg-transparent",
+          ? "bg-[color-mix(in_srgb,var(--brand-purple-deep)_90%,transparent)] shadow-[0_12px_40px_rgb(10_6_24/0.28)] backdrop-blur-xl"
+          : "bg-[linear-gradient(180deg,rgb(18_8_40/0.55),transparent)]",
       )}
     >
-      <div className="mx-auto flex h-[var(--nav-height)] w-[var(--content)] items-center justify-between gap-6">
+      <div className="mx-auto flex h-[var(--nav-height)] w-[min(1280px,calc(100%-1.5rem))] items-center justify-between gap-4">
         <a href="#top" className="shrink-0" onClick={() => setOpen(false)}>
           <LogoLockup invert compact />
         </a>
 
-        <nav className="hidden items-center gap-7 lg:flex">
+        <nav className="hidden items-center gap-6 xl:gap-8 lg:flex">
           {links.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="text-[0.78rem] tracking-[0.2em] text-white/72 uppercase transition-colors hover:text-[var(--brand-orange)]"
+              className="whitespace-nowrap text-[0.72rem] tracking-[0.18em] text-white/80 uppercase transition-colors hover:text-[var(--brand-orange)]"
             >
               {t(link.label)}
             </a>
@@ -100,7 +107,7 @@ export function Nav() {
           <LanguageToggle compact />
           <button
             type="button"
-            className="grid h-10 w-10 place-items-center text-[var(--brand-cream)]"
+            className="grid h-11 w-11 place-items-center text-[var(--brand-cream)]"
             aria-expanded={open}
             aria-label="Menu"
             onClick={() => setOpen((v) => !v)}
@@ -127,21 +134,24 @@ export function Nav() {
       <AnimatePresence>
         {open ? (
           <motion.nav
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="overflow-hidden border-t border-white/10 lg:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-x-0 top-[var(--nav-height)] bottom-0 z-40 bg-[var(--brand-purple-deep)] lg:hidden"
           >
-            <div className="mx-auto flex w-[var(--content)] flex-col gap-1 py-5">
-              {links.map((link) => (
-                <a
+            <div className="mx-auto flex h-full w-[min(1280px,calc(100%-1.5rem))] flex-col justify-center gap-2">
+              {links.map((link, i) => (
+                <motion.a
                   key={link.href}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className="py-3 text-[1.05rem] tracking-[0.16em] text-[var(--brand-cream)] uppercase"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.05 * i }}
+                  className="border-b border-white/10 py-4 text-[1.35rem] tracking-[0.14em] text-[var(--brand-cream)] uppercase"
                 >
                   {t(link.label)}
-                </a>
+                </motion.a>
               ))}
             </div>
           </motion.nav>

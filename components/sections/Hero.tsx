@@ -35,7 +35,7 @@ export function Hero() {
           animate={{ opacity: 1, scale: 1, x: 0 }}
           transition={{ duration: 1.05, delay: 0.2, ease }}
         >
-          <Hummingbird className="h-[clamp(7rem,18vw,11rem)] w-[clamp(11rem,28vw,17rem)]" />
+          <Hummingbird className="h-[clamp(7.5rem,20vw,12rem)] w-[clamp(12.5rem,32vw,20rem)]" />
         </motion.div>
 
         <motion.div
