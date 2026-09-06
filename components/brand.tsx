@@ -30,9 +30,10 @@ export function Hummingbird({ className, title, surface = "dark" }: MarkProps) {
         fill={wingLight}
       />
       <path
-        d="M250 94c14-22 46-26 70-6l78 24-78 12c-14 26-50 70-138 100-10-16 14-54 46-86 10-10 16-26 22-44Z"
+        d="M238 96c12-20 40-24 62-6 8 8 10 20 8 30-16 24-48 64-128 96-10-16 12-52 42-82 10-10 12-24 16-38Z"
         fill="var(--brand-orange)"
       />
+      <path d="M298 108 392 116 298 124Z" fill="var(--brand-orange)" />
     </svg>
   );
 }

@@ -77,12 +77,15 @@ export function Nav() {
   }, [open]);
 
   return (
+    <>
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-[background,box-shadow,backdrop-filter] duration-500",
-        scrolled || open
+        scrolled && !open
           ? "bg-[color-mix(in_srgb,var(--brand-purple-deep)_90%,transparent)] shadow-[0_12px_40px_rgb(10_6_24/0.28)] backdrop-blur-xl"
-          : "bg-[linear-gradient(180deg,rgb(18_8_40/0.55),transparent)]",
+          : open
+            ? "bg-[var(--brand-purple-deep)]"
+            : "bg-[linear-gradient(180deg,rgb(18_8_40/0.55),transparent)]",
       )}
     >
       <div className="mx-auto flex h-[var(--nav-height)] w-[min(1280px,calc(100%-1.5rem))] items-center justify-between gap-4">
@@ -95,7 +98,7 @@ export function Nav() {
             <a
               key={link.href}
               href={link.href}
-              className="whitespace-nowrap text-[0.72rem] tracking-[0.18em] text-white/80 uppercase transition-colors hover:text-[var(--brand-orange)]"
+              className="whitespace-nowrap text-[0.72rem] tracking-[0.18em] text-white uppercase transition-colors hover:text-[var(--brand-orange)]"
             >
               {t(link.label)}
             </a>
@@ -131,6 +134,7 @@ export function Nav() {
         </div>
       </div>
 
+    </header>
       <AnimatePresence>
         {open ? (
           <motion.nav
@@ -148,7 +152,7 @@ export function Nav() {
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.05 * i }}
-                  className="border-b border-white/10 py-4 text-[1.35rem] tracking-[0.14em] text-[var(--brand-cream)] uppercase"
+                  className="border-b border-white/15 py-4 text-[1.35rem] tracking-[0.14em] text-white uppercase"
                 >
                   {t(link.label)}
                 </motion.a>
@@ -157,6 +161,6 @@ export function Nav() {
           </motion.nav>
         ) : null}
       </AnimatePresence>
-    </header>
+    </>
   );
 }
