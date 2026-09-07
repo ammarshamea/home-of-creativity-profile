@@ -1,10 +1,8 @@
 "use client";
 
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useRef, type ReactNode } from "react";
+import { gsap, useGSAP } from "@/lib/gsap-client";
 import { cn } from "@/lib/cn";
-
-const ease = [0.22, 1, 0.36, 1] as const;
 
 export function Reveal({
   children,
@@ -17,18 +15,49 @@ export function Reveal({
   delay?: number;
   y?: number;
 }) {
-  const reduce = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      const el = ref.current;
+      if (!el) return;
+
+      const mm = gsap.matchMedia();
+      mm.add(
+        {
+          reduceMotion: "(prefers-reduced-motion: reduce)",
+          allowMotion: "(prefers-reduced-motion: no-preference)",
+        },
+        (context) => {
+          if (context.conditions?.reduceMotion) {
+            gsap.set(el, { autoAlpha: 1, y: 0 });
+            return;
+          }
+
+          gsap.from(el, {
+            autoAlpha: 0,
+            y,
+            duration: 0.85,
+            delay,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 86%",
+              toggleActions: "play none none none",
+            },
+          });
+        },
+      );
+
+      return () => mm.revert();
+    },
+    { scope: ref, dependencies: [delay, y] },
+  );
 
   return (
-    <motion.div
-      className={className}
-      initial={reduce ? false : { opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.22 }}
-      transition={{ duration: 0.8, delay, ease }}
-    >
+    <div ref={ref} className={className}>
       {children}
-    </motion.div>
+    </div>
   );
 }
 
@@ -41,23 +70,51 @@ export function Stagger({
   className?: string;
   delay?: number;
 }) {
-  const reduce = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      const root = ref.current;
+      if (!root) return;
+
+      const mm = gsap.matchMedia();
+      mm.add(
+        {
+          reduceMotion: "(prefers-reduced-motion: reduce)",
+          allowMotion: "(prefers-reduced-motion: no-preference)",
+        },
+        (context) => {
+          const items = gsap.utils.toArray<HTMLElement>(".gsap-stagger-item");
+          if (context.conditions?.reduceMotion) {
+            gsap.set(items, { autoAlpha: 1, y: 0 });
+            return;
+          }
+
+          gsap.from(items, {
+            autoAlpha: 0,
+            y: 22,
+            duration: 0.7,
+            delay,
+            ease: "power3.out",
+            stagger: 0.08,
+            scrollTrigger: {
+              trigger: root,
+              start: "top 82%",
+              toggleActions: "play none none none",
+            },
+          });
+        },
+      );
+
+      return () => mm.revert();
+    },
+    { scope: ref, dependencies: [delay] },
+  );
 
   return (
-    <motion.div
-      className={className}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, amount: 0.18 }}
-      variants={{
-        hidden: {},
-        show: {
-          transition: { staggerChildren: reduce ? 0 : 0.08, delayChildren: delay },
-        },
-      }}
-    >
+    <div ref={ref} className={className}>
       {children}
-    </motion.div>
+    </div>
   );
 }
 
@@ -68,19 +125,7 @@ export function StaggerItem({
   children: ReactNode;
   className?: string;
 }) {
-  const reduce = useReducedMotion();
-
-  return (
-    <motion.div
-      className={className}
-      variants={{
-        hidden: reduce ? { opacity: 1 } : { opacity: 0, y: 22 },
-        show: { opacity: 1, y: 0, transition: { duration: 0.7, ease } },
-      }}
-    >
-      {children}
-    </motion.div>
-  );
+  return <div className={cn("gsap-stagger-item", className)}>{children}</div>;
 }
 
 export function ParallaxFrame({
@@ -93,18 +138,41 @@ export function ParallaxFrame({
   intensity?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const reduce = useReducedMotion();
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  const y = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [intensity, -intensity]);
+
+  useGSAP(
+    () => {
+      const root = ref.current;
+      const inner = root?.querySelector<HTMLElement>(".gsap-parallax-inner");
+      if (!root || !inner) return;
+
+      const mm = gsap.matchMedia();
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        gsap.fromTo(
+          inner,
+          { y: intensity },
+          {
+            y: -intensity,
+            ease: "none",
+            scrollTrigger: {
+              trigger: root,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1,
+            },
+          },
+        );
+      });
+
+      return () => mm.revert();
+    },
+    { scope: ref, dependencies: [intensity] },
+  );
 
   return (
     <div ref={ref} className={cn("overflow-hidden", className)}>
-      <motion.div style={{ y }} className="h-full w-full will-change-transform">
+      <div className="gsap-parallax-inner relative h-[118%] w-full will-change-transform">
         {children}
-      </motion.div>
+      </div>
     </div>
   );
 }

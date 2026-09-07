@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { LanguageProvider, useLanguage } from "@/lib/i18n";
+import { ScrollTrigger } from "@/lib/gsap-client";
 
 function LocaleFlash() {
   const { locale } = useLanguage();
@@ -15,7 +16,10 @@ function LocaleFlash() {
       return;
     }
     setFlash(true);
-    const id = window.setTimeout(() => setFlash(false), 420);
+    const id = window.setTimeout(() => {
+      setFlash(false);
+      ScrollTrigger.refresh();
+    }, 420);
     return () => window.clearTimeout(id);
   }, [locale]);
 

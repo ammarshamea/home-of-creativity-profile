@@ -1,11 +1,14 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LogoLockup } from "./brand";
-import { footer, nav } from "@/lib/content";
-import { useLanguage } from "@/lib/i18n";
+import { CLIENT_TELEGRAM_URL } from "@/lib/base-path";
+import { contact, footer, nav } from "@/lib/content";
+import { useLanguage, type Copy } from "@/lib/i18n";
 import { cn } from "@/lib/cn";
+import { whatsappHref } from "@/lib/whatsapp";
+import { gsap, useGSAP } from "@/lib/gsap-client";
 
 const links = [
   { href: "#about", label: nav.about },
@@ -20,47 +23,75 @@ export function LanguageToggle({ compact = false }: { compact?: boolean }) {
   const { locale, setLocale, t } = useLanguage();
 
   return (
-    <button
-      type="button"
-      onClick={() => setLocale(locale === "en" ? "ar" : "en")}
+    <div
+      role="group"
       aria-label={t(nav.language)}
-      aria-pressed={locale === "ar"}
+      dir="ltr"
       className={cn(
-        "relative isolate shrink-0 rounded-full border border-white/35 bg-black/30 p-1 text-[0.7rem] font-semibold uppercase text-[var(--brand-cream)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-orange)]",
-        locale === "ar" ? "tracking-normal" : "tracking-[0.16em]",
+        "relative isolate grid shrink-0 grid-cols-2 rounded-full border border-white/35 bg-black/30 p-1 text-[0.7rem] font-semibold uppercase text-[var(--brand-cream)]",
         compact ? "min-w-[5.4rem]" : "min-w-[6.2rem]",
       )}
     >
-      <span className="grid grid-cols-2">
-        {(["en", "ar"] as const).map((code) => {
-          const selected = locale === code;
-          return (
-            <span
-              key={code}
-              className={cn(
-                "rounded-full px-2.5 py-1.5 transition-colors duration-300",
-                selected
-                  ? "bg-[var(--brand-orange)] text-[var(--brand-purple-deep)]"
-                  : "text-white/70",
-              )}
-            >
-              {code === "en" ? "EN" : "AR"}
-            </span>
-          );
-        })}
-      </span>
-    </button>
+      {(["en", "ar"] as const).map((code) => {
+        const selected = locale === code;
+        return (
+          <button
+            key={code}
+            type="button"
+            aria-pressed={selected}
+            aria-label={code === "en" ? "English" : "العربية"}
+            onPointerDown={() => setLocale(code)}
+            onClick={() => setLocale(code)}
+            className={cn(
+              "cursor-pointer rounded-full px-2.5 py-1.5 transition-colors duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-orange)]",
+              selected
+                ? "bg-[var(--brand-orange)] text-[var(--brand-purple-deep)]"
+                : "text-white/70 hover:text-[var(--brand-cream)]",
+            )}
+          >
+            {code === "en" ? "EN" : "AR"}
+          </button>
+        );
+      })}
+    </div>
   );
 }
 
 export function Nav() {
   const { t, locale } = useLanguage();
   const reduce = useReducedMotion();
+  const headerRef = useRef<HTMLElement>(null);
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("#top");
 
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        gsap.fromTo(
+          ".nav-progress",
+          { scaleX: 0 },
+          {
+            scaleX: 1,
+            ease: "none",
+            transformOrigin: locale === "ar" ? "100% 50%" : "0% 50%",
+            scrollTrigger: {
+              trigger: document.documentElement,
+              start: "top top",
+              end: "bottom bottom",
+              scrub: 0.35,
+            },
+          },
+        );
+      });
+      return () => mm.revert();
+    },
+    { scope: headerRef, dependencies: [locale] },
+  );
+
   function goTo(href: string) {
+    setActive(href);
     setOpen(false);
     const el = document.querySelector(href);
     window.setTimeout(() => {
@@ -79,26 +110,34 @@ export function Nav() {
 
   useEffect(() => {
     const ids = ["top", "about", "philosophy", "services", "projects", "finance", "contact"];
-    const sections = ids
-      .map((id) => document.getElementById(id))
-      .filter((el): el is HTMLElement => Boolean(el));
 
-    if (!sections.length) return;
+    const updateActive = () => {
+      const marker = (headerRef.current?.offsetHeight ?? 72) + 24;
+      const doc = document.documentElement;
+      const atBottom = window.innerHeight + window.scrollY >= doc.scrollHeight - 4;
+      if (atBottom) {
+        setActive("#contact");
+        return;
+      }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible?.target.id) {
-          setActive(`#${visible.target.id}`);
+      let current = ids[0];
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        if (el.getBoundingClientRect().top - marker <= 0) {
+          current = id;
         }
-      },
-      { rootMargin: "-28% 0px -55% 0px", threshold: [0.15, 0.35, 0.6] },
-    );
+      }
+      setActive(`#${current}`);
+    };
 
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
+    updateActive();
+    window.addEventListener("scroll", updateActive, { passive: true });
+    window.addEventListener("resize", updateActive);
+    return () => {
+      window.removeEventListener("scroll", updateActive);
+      window.removeEventListener("resize", updateActive);
+    };
   }, []);
 
   useEffect(() => {
@@ -115,7 +154,7 @@ export function Nav() {
   const linkClass = (href: string, mobile = false) =>
     cn(
       mobile
-        ? "border-b border-white/15 py-4 text-[1.35rem] text-white"
+        ? "border-b border-white/15 py-4 text-start text-[1.35rem] text-white"
         : "relative grid h-11 place-items-center rounded-full px-1.5 text-[0.82rem] font-semibold text-[var(--brand-cream)] transition-colors hover:bg-white/10 hover:text-[var(--brand-orange)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-orange)] xl:text-[0.9rem]",
       !mobile && locale === "ar" ? "tracking-normal" : !mobile && "tracking-[0.08em]",
       mobile && locale === "ar" ? "tracking-normal" : mobile && "tracking-[0.14em]",
@@ -128,6 +167,8 @@ export function Nav() {
   return (
     <>
       <header
+        ref={headerRef}
+        dir={locale === "ar" ? "rtl" : "ltr"}
         className={cn(
           "fixed inset-x-0 top-0 z-50 transition-[background,box-shadow,backdrop-filter] duration-500",
           scrolled && !open
@@ -151,6 +192,7 @@ export function Nav() {
                 key={link.href}
                 href={link.href}
                 aria-current={active === link.href ? "true" : undefined}
+                onClick={() => setActive(link.href)}
                 className={linkClass(link.href)}
               >
                 {t(link.label)}
@@ -158,24 +200,31 @@ export function Nav() {
             ))}
           </nav>
 
-          <div className="hidden items-center justify-self-end gap-3 lg:flex">
+          <div className="flex items-center justify-self-end gap-3">
+            <a
+              href={CLIENT_TELEGRAM_URL}
+              target="_blank"
+              rel="noreferrer"
+              className={cn(
+                "inline-flex rounded-full border border-white/40 px-3 py-2 text-[0.72rem] font-semibold uppercase text-[var(--brand-cream)] transition-colors hover:border-[var(--brand-orange)] hover:text-[var(--brand-orange)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-orange)] lg:px-4 lg:text-[0.78rem]",
+                locale === "ar" ? "tracking-normal" : "tracking-[0.14em]",
+              )}
+            >
+              {t(nav.telegram)}
+            </a>
             <a
               href="#contact"
               className={cn(
-                "rounded-full bg-[var(--brand-orange)] px-4 py-2 text-[0.78rem] font-semibold uppercase text-[var(--brand-purple-deep)] transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-cream)]",
+                "hidden rounded-full bg-[var(--brand-orange)] px-4 py-2 text-[0.78rem] font-semibold uppercase text-[var(--brand-purple-deep)] transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-cream)] lg:inline-flex",
                 locale === "ar" ? "tracking-normal" : "tracking-[0.14em]",
               )}
             >
               {t(nav.cta)}
             </a>
-            <LanguageToggle />
-          </div>
-
-          <div className="flex items-center justify-self-end gap-3 lg:hidden">
             <LanguageToggle compact />
             <button
               type="button"
-              className="grid h-11 w-11 place-items-center text-[var(--brand-cream)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-orange)]"
+              className="grid h-11 w-11 place-items-center text-[var(--brand-cream)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-orange)] lg:hidden"
               aria-expanded={open}
               aria-controls="mobile-nav"
               aria-label={t(nav.menu)}
@@ -199,6 +248,10 @@ export function Nav() {
             </button>
           </div>
         </div>
+        <span
+          aria-hidden
+          className="nav-progress pointer-events-none absolute inset-x-0 bottom-0 h-px origin-start scale-x-0 bg-[var(--brand-orange)]"
+        />
       </header>
       <AnimatePresence>
         {open ? (
@@ -209,7 +262,10 @@ export function Nav() {
             exit={{ opacity: 0 }}
             className="fixed inset-x-0 top-[var(--nav-height)] bottom-0 z-40 bg-[var(--brand-purple-deep)] lg:hidden"
           >
-            <div className="mx-auto flex h-full w-[min(1280px,calc(100%-1.5rem))] flex-col justify-center gap-2">
+            <div
+              dir={locale === "ar" ? "rtl" : "ltr"}
+              className="mx-auto flex h-full w-[min(1280px,calc(100%-1.5rem))] flex-col justify-center gap-2"
+            >
               {links.map((link, i) => (
                 <motion.a
                   key={link.href}
@@ -228,6 +284,17 @@ export function Nav() {
                 </motion.a>
               ))}
               <motion.a
+                href={CLIENT_TELEGRAM_URL}
+                target="_blank"
+                rel="noreferrer"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.24 }}
+                className="mt-4 inline-flex w-fit rounded-full border border-white/40 px-5 py-3 text-[1rem] font-semibold text-[var(--brand-cream)]"
+              >
+                {t(nav.telegram)}
+              </motion.a>
+              <motion.a
                 href="#contact"
                 onClick={(event) => {
                   event.preventDefault();
@@ -235,8 +302,8 @@ export function Nav() {
                 }}
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.24 }}
-                className="mt-4 inline-flex w-fit rounded-full bg-[var(--brand-orange)] px-5 py-3 text-[1rem] font-semibold text-[var(--brand-purple-deep)]"
+                transition={{ delay: 0.28 }}
+                className="mt-2 inline-flex w-fit rounded-full bg-[var(--brand-orange)] px-5 py-3 text-[1rem] font-semibold text-[var(--brand-purple-deep)]"
               >
                 {t(nav.cta)}
               </motion.a>
@@ -252,27 +319,103 @@ export function Footer() {
   const { t, locale } = useLanguage();
 
   return (
-    <footer className="border-t border-white/10 bg-[var(--brand-purple-deep)] py-10 text-[var(--brand-cream)]">
-      <div className="mx-auto flex w-[var(--content)] flex-col items-start justify-between gap-8 md:flex-row md:items-center">
-        <a href="#top">
-          <LogoLockup invert compact />
-        </a>
-        <nav className="flex flex-wrap gap-x-6 gap-y-2" aria-label={t(nav.menu)}>
-          {links.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className={cn(
-                "text-[0.78rem] text-white/65 transition-colors hover:text-[var(--brand-orange)]",
-                locale === "ar" ? "tracking-normal" : "tracking-[0.12em] uppercase",
-              )}
-            >
-              {t(link.label)}
-            </a>
-          ))}
-        </nav>
-        <p className="m-0 text-[0.72rem] text-white/40">{t(footer.rights)}</p>
+    <footer
+      dir={locale === "ar" ? "rtl" : "ltr"}
+      className="bg-[var(--brand-charcoal)] pb-10 text-[var(--brand-cream)]"
+    >
+      <div className="mx-auto grid w-[var(--content)] gap-10 border-t border-white/10 pt-12 md:grid-cols-[1.2fr_1fr_1fr]">
+        <div>
+          <a href="#top" className="inline-flex">
+            <LogoLockup invert compact />
+          </a>
+          <p className="mt-4 max-w-xs text-[0.95rem] text-white/60">{t(footer.tagline)}</p>
+          <p className="mt-2 text-[0.9rem] text-[var(--brand-orange)]">{t(contact.region)}</p>
+        </div>
+
+        <div>
+          <p
+            className={cn(
+              "m-0 text-[0.78rem] text-white/45",
+              locale === "en" && "tracking-[0.18em] uppercase",
+            )}
+          >
+            {t(footer.reach)}
+          </p>
+          <ul className="mt-4 grid list-none gap-3 p-0">
+            {contact.channels.map((channel) => (
+              <li key={channel.id} className="list-none text-start">
+                <p className="m-0 text-[0.78rem] text-[var(--brand-orange)]">{t(channel.label)}</p>
+                <div className="mt-1 flex flex-col gap-1">
+                  {channel.lines.map((line) => {
+                    const value = typeof line.text === "string" ? line.text : t(line.text as Copy);
+                    const label = `${t(channel.label)} ${line.region} ${value}`;
+                    const body = (
+                      <>
+                        <span className="text-white/40">{line.region}</span>{" "}
+                        <span dir={channel.kind === "text" ? undefined : "ltr"}>{value}</span>
+                      </>
+                    );
+                    if (channel.kind === "whatsapp" && "digits" in line && line.digits) {
+                      return (
+                        <a
+                          key={label}
+                          href={whatsappHref(t(contact.greeting), line.digits)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[0.88rem] text-white/70 transition-colors hover:text-[var(--brand-orange)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-orange)]"
+                        >
+                          {body}
+                        </a>
+                      );
+                    }
+                    if (channel.kind === "tel" && "digits" in line && line.digits) {
+                      return (
+                        <a
+                          key={label}
+                          href={`tel:+${line.digits}`}
+                          className="text-[0.88rem] text-white/70 transition-colors hover:text-[var(--brand-orange)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-orange)]"
+                        >
+                          {body}
+                        </a>
+                      );
+                    }
+                    return (
+                      <p key={label} className="m-0 text-[0.88rem] text-white/70">
+                        {body}
+                      </p>
+                    );
+                  })}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <p
+            className={cn(
+              "m-0 text-[0.78rem] text-white/45",
+              locale === "en" && "tracking-[0.18em] uppercase",
+            )}
+          >
+            {t(footer.explore)}
+          </p>
+          <nav className="mt-4 grid gap-2" aria-label={t(nav.menu)}>
+            {links.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="text-[0.95rem] text-white/70 transition-colors hover:text-[var(--brand-orange)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-orange)]"
+              >
+                {t(link.label)}
+              </a>
+            ))}
+          </nav>
+        </div>
       </div>
+      <p className="mx-auto mt-10 w-[var(--content)] border-t border-white/10 pt-6 text-[0.72rem] text-white/40">
+        {t(footer.rights)}
+      </p>
     </footer>
   );
 }

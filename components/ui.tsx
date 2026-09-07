@@ -19,15 +19,23 @@ export function SectionHeading({
   title,
   kicker,
   invert = false,
+  align = "start",
 }: {
   title: Copy;
   kicker?: Copy;
   invert?: boolean;
+  align?: "start" | "center";
 }) {
   const { t, locale } = useLanguage();
 
   return (
-    <div className="flex flex-col gap-3">
+    <div
+      className={cn(
+        "flex flex-col gap-3",
+        align === "center" ? "items-center text-center" : "text-start",
+      )}
+    >
+      <span aria-hidden className="block h-px w-9 bg-[var(--brand-orange)]" />
       {kicker ? (
         <p
           className={cn(

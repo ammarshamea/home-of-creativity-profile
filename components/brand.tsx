@@ -1,19 +1,59 @@
 "use client";
 
+import { useRef } from "react";
 import { brand } from "@/lib/content";
 import { cn } from "@/lib/cn";
+import { gsap, useGSAP } from "@/lib/gsap-client";
 
 type MarkProps = {
   className?: string;
   title?: string;
-  surface?: "dark" | "light";
+  surface?: "dark" | "light" | "solid";
+  float?: boolean;
 };
 
-export function Hummingbird({ className, title, surface = "dark" }: MarkProps) {
-  const wingLight = surface === "light" ? "var(--brand-purple)" : "var(--brand-cream)";
+export function Hummingbird({ className, title, surface = "dark", float = false }: MarkProps) {
+  const ref = useRef<SVGSVGElement>(null);
+  const wingLight =
+    surface === "light"
+      ? "var(--brand-purple)"
+      : surface === "solid"
+        ? "#fbf7f0"
+        : "var(--brand-cream)";
+
+  useGSAP(
+    () => {
+      if (!float) return;
+
+      const mm = gsap.matchMedia();
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        gsap.to(ref.current, {
+          y: -12,
+          duration: 3.4,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: -1,
+        });
+
+        gsap.to("[data-wing]", {
+          scaleY: 0.9,
+          transformOrigin: "70% 80%",
+          duration: 0.85,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: -1,
+          stagger: 0.14,
+        });
+      });
+
+      return () => mm.revert();
+    },
+    { scope: ref, dependencies: [float] },
+  );
 
   return (
     <svg
+      ref={ref}
       viewBox="0 0 400 240"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -22,10 +62,12 @@ export function Hummingbird({ className, title, surface = "dark" }: MarkProps) {
       aria-label={title}
     >
       <path
+        data-wing
         d="M188 128C142 102 78 96 50 118c-22 18-10 50 28 52 40 2 78-16 110-42Z"
         fill="var(--brand-teal)"
       />
       <path
+        data-wing
         d="M208 108C158 52 86 14 48 40 22 56 34 94 86 110c48 16 86 12 122-2Z"
         fill={wingLight}
       />
@@ -81,7 +123,7 @@ export function LogoLockup({
   compact?: boolean;
 }) {
   return (
-    <span className={cn("inline-flex items-center gap-2.5", className)}>
+    <span className={cn("inline-flex items-center gap-2.5", className)} dir="ltr">
       <Hummingbird
         className={cn(compact ? "h-7 w-12" : "h-10 w-[4.2rem]")}
         title={brand.name}

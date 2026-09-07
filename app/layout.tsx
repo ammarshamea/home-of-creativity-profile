@@ -39,7 +39,15 @@ export default function RootLayout({
       lang="en"
       dir="ltr"
       className={`${inter.variable} ${ibmPlexArabic.variable} ${greatVibes.variable}`}
+      suppressHydrationWarning
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var l=localStorage.getItem("hoc-locale");if(l==="ar"){document.documentElement.lang="ar";document.documentElement.dir="rtl";document.documentElement.dataset.locale="ar";}}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body>
         <div className="grain" aria-hidden />
         <Providers>{children}</Providers>
