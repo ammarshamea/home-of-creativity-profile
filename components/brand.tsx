@@ -18,8 +18,10 @@ export function Hummingbird({ className, title, surface = "dark", float = false 
     surface === "light"
       ? "var(--brand-purple)"
       : surface === "solid"
-        ? "#fbf7f0"
+        ? "#fffdf0"
         : "var(--brand-cream)";
+  const teal = "#08af9b";
+  const orange = "#f35c27";
 
   useGSAP(
     () => {
@@ -36,8 +38,8 @@ export function Hummingbird({ className, title, surface = "dark", float = false 
         });
 
         gsap.to("[data-wing]", {
-          scaleY: 0.9,
-          transformOrigin: "70% 80%",
+          scaleY: 0.92,
+          transformOrigin: "40% 70%",
           duration: 0.85,
           ease: "sine.inOut",
           yoyo: true,
@@ -54,7 +56,7 @@ export function Hummingbird({ className, title, surface = "dark", float = false 
   return (
     <svg
       ref={ref}
-      viewBox="0 0 400 240"
+      viewBox="0 0 740.62 522.79"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={cn("overflow-visible", className)}
@@ -63,19 +65,18 @@ export function Hummingbird({ className, title, surface = "dark", float = false 
     >
       <path
         data-wing
-        d="M188 128C142 102 78 96 50 118c-22 18-10 50 28 52 40 2 78-16 110-42Z"
-        fill="var(--brand-teal)"
-      />
-      <path
-        data-wing
-        d="M208 108C158 52 86 14 48 40 22 56 34 94 86 110c48 16 86 12 122-2Z"
+        d="M377.65,312.32l65.22-111.35L99.74,0h0c52.31,225.4,277.91,312.32,277.91,312.32Z"
         fill={wingLight}
       />
       <path
-        d="M238 96c12-20 40-24 62-6 8 8 10 20 8 30-16 24-48 64-128 96-10-16 12-52 42-82 10-10 12-24 16-38Z"
-        fill="var(--brand-orange)"
+        data-wing
+        d="M397.64,303.52v-129.05H0s0,0,0,0c159.06,168.06,397.64,129.05,397.64,129.05Z"
+        fill={teal}
       />
-      <path d="M298 108 392 116 298 124Z" fill="var(--brand-orange)" />
+      <path
+        d="M542.55,117.28s-17.77-18.34-63.51-24.39c-43.43-5.74-56.82,37.69-56.82,37.69l-223.4,392.21c110.59-37.16,294.28-199.74,297.71-313.91.39-12.97,3.24-25.78,8.7-37.55,15.61-33.61,40.9-37.9,40.9-37.9,11.91-2.55,194.48,4.82,194.48,4.82-23.81-11.34-198.08-20.98-198.08-20.98Z"
+        fill={orange}
+      />
     </svg>
   );
 }
@@ -125,7 +126,7 @@ export function LogoLockup({
   return (
     <span className={cn("inline-flex items-center gap-2.5", className)} dir="ltr">
       <Hummingbird
-        className={cn(compact ? "h-7 w-12" : "h-10 w-[4.2rem]")}
+        className={cn(compact ? "h-8 w-11" : "h-11 w-16")}
         title={brand.name}
         surface={invert ? "dark" : "light"}
       />

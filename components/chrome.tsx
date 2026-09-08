@@ -10,10 +10,18 @@ import { cn } from "@/lib/cn";
 import { whatsappHref } from "@/lib/whatsapp";
 import { gsap, useGSAP } from "@/lib/gsap-client";
 
-const links = [
+const navLinks = [
+  { href: "#about", label: nav.about },
+  { href: "#services", label: nav.services },
+  { href: "#projects", label: nav.projects },
+  { href: "#contact", label: nav.contact },
+];
+
+const footerLinks = [
   { href: "#about", label: nav.about },
   { href: "#philosophy", label: nav.philosophy },
   { href: "#services", label: nav.services },
+  { href: "#clients", label: nav.clients },
   { href: "#projects", label: nav.projects },
   { href: "#finance", label: nav.finance },
   { href: "#contact", label: nav.contact },
@@ -109,7 +117,7 @@ export function Nav() {
   }, []);
 
   useEffect(() => {
-    const ids = ["top", "about", "philosophy", "services", "projects", "finance", "contact"];
+    const ids = ["top", "about", "philosophy", "services", "clients", "projects", "finance", "contact"];
 
     const updateActive = () => {
       const marker = (headerRef.current?.offsetHeight ?? 72) + 24;
@@ -170,7 +178,7 @@ export function Nav() {
         ref={headerRef}
         dir={locale === "ar" ? "rtl" : "ltr"}
         className={cn(
-          "fixed inset-x-0 top-0 z-50 transition-[background,box-shadow,backdrop-filter] duration-500",
+          "fixed inset-x-0 top-0 z-50 pt-[env(safe-area-inset-top,0px)] transition-[background,box-shadow,backdrop-filter] duration-500",
           scrolled && !open
             ? "bg-[color-mix(in_srgb,var(--brand-purple-deep)_90%,transparent)] shadow-[0_12px_40px_rgb(10_6_24/0.28)] backdrop-blur-xl"
             : open
@@ -178,16 +186,16 @@ export function Nav() {
               : "bg-[linear-gradient(180deg,rgb(18_8_40/0.55),transparent)]",
         )}
       >
-        <div className="mx-auto grid h-[var(--nav-height)] w-[min(1280px,calc(100%-1.5rem))] grid-cols-[auto_1fr_auto] items-center gap-4">
+        <div className="mx-auto grid h-[var(--nav-height)] w-[min(1280px,calc(100%-1rem))] grid-cols-[auto_1fr_auto] items-center gap-2 sm:w-[min(1280px,calc(100%-1.5rem))] sm:gap-4">
           <a href="#top" className="shrink-0 justify-self-start" onClick={() => setOpen(false)}>
             <LogoLockup invert compact />
           </a>
 
           <nav
-            className="mx-2 hidden min-w-0 grid-cols-6 items-center lg:grid"
+            className="mx-2 hidden min-w-0 grid-cols-4 items-center lg:grid"
             aria-label={t(nav.menu)}
           >
-            {links.map((link) => (
+            {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
@@ -200,13 +208,13 @@ export function Nav() {
             ))}
           </nav>
 
-          <div className="flex items-center justify-self-end gap-3">
+          <div className="flex items-center justify-self-end gap-2 sm:gap-3">
             <a
               href={CLIENT_TELEGRAM_URL}
               target="_blank"
               rel="noreferrer"
               className={cn(
-                "inline-flex rounded-full border border-white/40 px-3 py-2 text-[0.72rem] font-semibold uppercase text-[var(--brand-cream)] transition-colors hover:border-[var(--brand-orange)] hover:text-[var(--brand-orange)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-orange)] lg:px-4 lg:text-[0.78rem]",
+                "hidden rounded-full border border-white/40 px-3 py-2 text-[0.72rem] font-semibold uppercase text-[var(--brand-cream)] transition-colors hover:border-[var(--brand-orange)] hover:text-[var(--brand-orange)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-orange)] min-[480px]:inline-flex lg:px-4 lg:text-[0.78rem]",
                 locale === "ar" ? "tracking-normal" : "tracking-[0.14em]",
               )}
             >
@@ -266,7 +274,7 @@ export function Nav() {
               dir={locale === "ar" ? "rtl" : "ltr"}
               className="mx-auto flex h-full w-[min(1280px,calc(100%-1.5rem))] flex-col justify-center gap-2"
             >
-              {links.map((link, i) => (
+              {navLinks.map((link, i) => (
                 <motion.a
                   key={link.href}
                   href={link.href}
@@ -401,7 +409,7 @@ export function Footer() {
             {t(footer.explore)}
           </p>
           <nav className="mt-4 grid gap-2" aria-label={t(nav.menu)}>
-            {links.map((link) => (
+            {footerLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}

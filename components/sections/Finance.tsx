@@ -4,8 +4,7 @@ import Image from "next/image";
 import { finance } from "@/lib/content";
 import { useLanguage } from "@/lib/i18n";
 import { withBasePath } from "@/lib/base-path";
-import { ScrollTrigger } from "@/lib/gsap-client";
-import { ParallaxFrame, Reveal, Stagger, StaggerItem } from "../motion";
+import { Reveal, Stagger, StaggerItem } from "../motion";
 import { SectionHeading, Shell } from "../ui";
 
 export function Finance() {
@@ -14,7 +13,7 @@ export function Finance() {
   return (
     <section
       id="finance"
-      className="relative overflow-hidden bg-[var(--brand-purple-deep)] py-24 text-[var(--brand-cream)] md:py-32"
+      className="relative overflow-hidden bg-[var(--brand-purple-deep)] py-16 text-[var(--brand-cream)] md:py-24 lg:py-32"
     >
       <div
         aria-hidden
@@ -32,16 +31,15 @@ export function Finance() {
         </Reveal>
 
         <Reveal className="mt-12">
-          <ParallaxFrame className="relative aspect-[16/9] border border-white/10 bg-[var(--brand-purple)] md:aspect-[21/10]">
+          <div className="relative aspect-[16/9] overflow-hidden border border-white/10 bg-[var(--brand-purple)] md:aspect-[21/10]">
             <Image
-              src={withBasePath("/photo/financial-analysis-growth-dashboard.png")}
+              src={withBasePath("/photo/financial-analysis-growth-dashboard.webp")}
               alt={t(finance.imageAlt)}
               fill
               sizes="(min-width: 1024px) 1180px, 100vw"
               className="object-cover object-center"
-              onLoad={() => ScrollTrigger.refresh()}
             />
-          </ParallaxFrame>
+          </div>
         </Reveal>
 
         <Stagger className="mt-12 grid gap-5 md:grid-cols-3">

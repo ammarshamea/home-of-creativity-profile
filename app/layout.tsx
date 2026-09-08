@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Great_Vibes, IBM_Plex_Sans_Arabic, Inter } from "next/font/google";
 import { Providers } from "./providers";
 import "./globals.css";
@@ -27,6 +27,12 @@ export const metadata: Metadata = {
   title: "Home of Creativity — Brand Architects",
   description:
     "Home of Creativity (Creativation Source) — brand architects. Premium Minimalism and human-centric marketing in Syria and Saudi Arabia.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({

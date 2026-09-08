@@ -58,7 +58,7 @@ export default function NotFoundPage() {
       <div className="absolute inset-0 overflow-hidden">
         <div className="nf-bg absolute inset-[-6%] h-[112%] w-[112%] will-change-transform">
           <Image
-            src={withBasePath("/photo/not-found-404.png")}
+            src={withBasePath("/photo/not-found-404.webp")}
             alt=""
             fill
             priority

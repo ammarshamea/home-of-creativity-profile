@@ -2,6 +2,7 @@
 
 import { Footer, Nav } from "@/components/chrome";
 import { About } from "@/components/sections/About";
+import { ClientJourney } from "@/components/sections/ClientJourney";
 import { Contact } from "@/components/sections/Contact";
 import { Finance } from "@/components/sections/Finance";
 import { Hero } from "@/components/sections/Hero";
@@ -18,6 +19,7 @@ export default function HomePage() {
         <About />
         <Philosophy />
         <Services />
+        <ClientJourney />
         <Projects />
         <Finance />
         <Contact />

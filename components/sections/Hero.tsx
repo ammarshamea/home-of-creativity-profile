@@ -28,8 +28,8 @@ export function Hero() {
 
           if (reduceMotion) {
             gsap.set(
-              [".hero-kicker", ".hero-accent", ".hero-title", ".hero-line", ".hero-cta", ".hero-scroll"],
-              { autoAlpha: 1, y: 0 },
+              [".hero-bird-mobile", ".hero-kicker", ".hero-accent", ".hero-title", ".hero-line", ".hero-cta", ".hero-scroll"],
+              { autoAlpha: 1, y: 0, x: 0 },
             );
             return;
           }
@@ -38,12 +38,23 @@ export function Hero() {
             defaults: { ease: "power3.out", duration: 0.85 },
           });
 
-          tl.from(".hero-kicker", { autoAlpha: 0, y: 16 })
+          tl.from(".hero-bird-mobile", { autoAlpha: 0, y: 18, duration: 0.9 })
+            .from(".hero-kicker", { autoAlpha: 0, y: 16 }, "<0.12")
             .from(".hero-accent", { autoAlpha: 0, y: 16 }, "<0.08")
             .from(".hero-title", { autoAlpha: 0, y: 22 }, "<0.1")
             .from(".hero-line", { autoAlpha: 0, y: 16 }, "<0.14")
             .from(".hero-cta", { autoAlpha: 0, y: 12 }, "<0.12")
             .from(".hero-scroll", { autoAlpha: 0 }, "-=0.25");
+
+          if (!isDesktop) {
+            gsap.to(".hero-bird-mobile", {
+              x: 16,
+              duration: 3.2,
+              ease: "sine.inOut",
+              yoyo: true,
+              repeat: -1,
+            });
+          }
 
           if (isDesktop) {
             gsap.to(".hero-bg", {
@@ -79,7 +90,7 @@ export function Hero() {
       <div className="absolute inset-0 overflow-hidden">
         <div className="hero-bg absolute inset-[-8%] h-[116%] w-[116%] will-change-transform">
           <Image
-            src={withBasePath("/photo/hero-section-background.png")}
+            src={withBasePath("/photo/hero-section-background.webp")}
             alt=""
             fill
             priority
@@ -109,11 +120,18 @@ export function Hero() {
       <Hummingbird
         float
         surface="solid"
-        className="hero-bird pointer-events-none absolute top-[20%] end-[2%] z-[1] h-[min(22rem,46vw)] w-[min(36rem,68vw)] opacity-100 mix-blend-normal [filter:drop-shadow(0_12px_22px_rgb(10_6_24/0.5))]"
+        className="hero-bird pointer-events-none absolute top-[20%] end-[2%] z-[1] hidden h-[min(26rem,52vw)] w-[min(36rem,68vw)] opacity-100 mix-blend-normal [filter:drop-shadow(0_12px_22px_rgb(10_6_24/0.5))] md:block"
       />
 
-      <div className="relative z-10 flex min-h-[100svh] w-full flex-col justify-center ps-[clamp(1.5rem,4.6vw,3rem)] pe-[var(--page-pad)] pt-[calc(var(--nav-height)+1.5rem)] pb-24">
+      <div className="relative z-10 flex min-h-[100svh] w-full flex-col justify-center ps-[clamp(1rem,4.6vw,3rem)] pe-[var(--page-pad)] pt-[calc(var(--nav-height)+1.15rem)] pb-24">
         <div className="max-w-3xl text-start">
+          <div className="hero-bird-mobile mb-5 flex justify-start will-change-transform md:hidden" aria-hidden>
+            <Hummingbird
+              float
+              surface="solid"
+              className="h-[min(9.75rem,42vw)] w-[min(13.75rem,58vw)] [filter:drop-shadow(0_10px_18px_rgb(10_6_24/0.45))]"
+            />
+          </div>
           <p
             className={cn(
               "hero-kicker text-[0.72rem] uppercase text-white/85",
@@ -132,10 +150,10 @@ export function Hero() {
             <span className="text-[var(--brand-orange)]">{t(hero.accentWord)}</span>
           </p>
 
-          <h1 className="hero-title font-display mt-8 uppercase leading-[0.86]">
+          <h1 className="hero-title font-display mt-5 uppercase leading-[0.86] md:mt-8">
             <span
               className={cn(
-                "block text-[clamp(2.8rem,8.2vw,6.8rem)] font-semibold text-white",
+                "block text-[clamp(2.35rem,11vw,6.8rem)] font-semibold text-white",
                 locale === "ar" ? "tracking-normal" : "tracking-[-0.03em]",
               )}
             >
@@ -143,7 +161,7 @@ export function Hero() {
             </span>
             <span
               className={cn(
-                "mt-1 block text-[clamp(3.2rem,9.4vw,7.6rem)] font-semibold text-[var(--brand-orange)]",
+                "mt-1 block text-[clamp(2.7rem,12vw,7.6rem)] font-semibold text-[var(--brand-orange)]",
                 locale === "ar" ? "tracking-normal" : "tracking-[-0.04em]",
               )}
             >
@@ -151,14 +169,14 @@ export function Hero() {
             </span>
           </h1>
 
-          <p className="hero-line mt-7 max-w-lg text-[1.05rem] leading-relaxed text-white/80">
+          <p className="hero-line mt-5 max-w-lg text-[1.02rem] leading-relaxed text-white/80 md:mt-7 md:text-[1.05rem]">
             {t(hero.line)}
           </p>
 
           <a
             href="#projects"
             className={cn(
-              "hero-cta mt-10 inline-flex items-center gap-3 rounded-full p-[1px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-orange)]",
+              "hero-cta mt-7 inline-flex items-center gap-3 rounded-full p-[1px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-orange)] md:mt-10",
               "bg-[linear-gradient(90deg,var(--brand-orange),rgb(255_255_255/0.85),var(--brand-teal))]",
             )}
           >

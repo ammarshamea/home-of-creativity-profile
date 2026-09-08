@@ -3,6 +3,7 @@ import { BASE_PATH } from "./lib/base-path";
 
 const nextConfig: NextConfig = {
   output: "export",
+  allowedDevOrigins: ["*.trycloudflare.com"],
   basePath: BASE_PATH,
   assetPrefix: BASE_PATH,
   trailingSlash: true,

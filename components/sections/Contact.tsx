@@ -147,13 +147,13 @@ export function Contact() {
         <div className="relative">
           <div
             aria-hidden
-            className="pointer-events-none absolute -top-8 inset-x-0 z-20 flex justify-center gap-28 md:gap-40"
+            className="pointer-events-none absolute -top-8 inset-x-0 z-20 flex justify-center gap-16 sm:gap-28 md:gap-40"
           >
             <BinderClip className="h-[4.4rem] w-12" />
             <BinderClip className="h-[4.4rem] w-12" />
           </div>
 
-          <div className="relative overflow-hidden bg-[var(--brand-cream)] px-6 py-16 text-[var(--brand-ink)] shadow-[0_24px_60px_rgb(0_0_0/0.35)] md:px-14 md:py-20">
+          <div className="relative overflow-hidden bg-[var(--brand-cream)] px-4 py-14 text-[var(--brand-ink)] shadow-[0_24px_60px_rgb(0_0_0/0.35)] sm:px-6 md:px-14 md:py-20">
             <Hummingbird
               surface="light"
               className="pointer-events-none absolute top-1/2 left-1/2 h-[min(28rem,70%)] w-[min(44rem,92%)] -translate-x-1/2 -translate-y-1/2 opacity-[0.13]"

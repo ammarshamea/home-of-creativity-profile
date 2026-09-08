@@ -11,6 +11,7 @@ export const nav = {
   about: { en: "About", ar: "من نحن" },
   philosophy: { en: "Philosophy", ar: "فلسفتنا" },
   services: { en: "Services", ar: "خدماتنا" },
+  clients: { en: "Client journey", ar: "مراحل العمل" },
   projects: { en: "Projects", ar: "المشاريع" },
   finance: { en: "Finance", ar: "التحليل المالي" },
   contact: { en: "Contact", ar: "تواصل" },
@@ -81,7 +82,7 @@ export const philosophy = {
     {
       id: "complex",
       label: { en: "Complexity", ar: "التعقيد" },
-      image: "/photo/mastering_the_complex.png",
+      image: "/photo/mastering_the_complex.webp",
       imageAlt: {
         en: "A figure facing a glowing cube of data and systems",
         ar: "شخص يواجه مكعباً مضيئاً من البيانات والأنظمة",
@@ -95,7 +96,7 @@ export const philosophy = {
     {
       id: "visual",
       label: { en: "Vision", ar: "الرؤية" },
-      image: "/photo/visual_innovation_3D.png",
+      image: "/photo/visual_innovation_3D.webp",
       imageAlt: {
         en: "A figure looking through a circular window at a 3D city vision",
         ar: "شخص ينظر من نافذة دائرية إلى رؤية مدينة ثلاثية الأبعاد",
@@ -109,7 +110,7 @@ export const philosophy = {
     {
       id: "precision",
       label: { en: "Precision", ar: "الدقة" },
-      image: "/photo/precision_over_presumption.png",
+      image: "/photo/precision_over_presumption.webp",
       imageAlt: {
         en: "A dart striking the exact center of a target",
         ar: "سهم يصيب مركز الهدف بدقة",
@@ -218,6 +219,66 @@ export const services = {
   ],
 };
 
+export const clientJourney = {
+  kicker: { en: "Clients", ar: "العملاء" },
+  title: { en: "Work stages", ar: "مراحل العمل" },
+  lead: {
+    en: "From first message to final delivery — a clear path through Telegram, with your team always in the loop.",
+    ar: "من أول رسالة إلى التسليم النهائي — مسار واضح عبر تيليجرام، وفريقك على اطلاع في كل مرحلة.",
+  },
+  cta: { en: "Start on Telegram", ar: "ابدأ عبر تيليجرام" },
+  steps: [
+    {
+      id: "submit",
+      title: { en: "Submit your brief", ar: "تقديم الطلب" },
+      body: {
+        en: "Describe your project on Telegram — text, images, or PDFs — and send it in one flow.",
+        ar: "صِف مشروعك على تيليجرام — نصاً أو صوراً أو PDF — وأرسله في خطوة واحدة.",
+      },
+    },
+    {
+      id: "review",
+      title: { en: "Sales review", ar: "مراجعة المبيعات" },
+      body: {
+        en: "Our sales team receives your request instantly, reviews the brief, and opens your file on ClickUp.",
+        ar: "يستلم فريق المبيعات طلبك فوراً، يراجع الموجز، ويفتح ملفك على كليك أب.",
+      },
+    },
+    {
+      id: "quote",
+      title: { en: "Quotation", ar: "عرض السعر" },
+      body: {
+        en: "You receive a branded PDF quotation with approve or reject — no back-and-forth guessing.",
+        ar: "تصلك عرض سعر بصيغة PDF مع خيار الموافقة أو الرفض — بلا تخمين أو مراسلات عشوائية.",
+      },
+    },
+    {
+      id: "payment",
+      title: { en: "Payment & invoice", ar: "الدفع والفاتورة" },
+      body: {
+        en: "After approval, the invoice arrives on Telegram. Upload your receipt securely from the same chat.",
+        ar: "بعد الموافقة، تصل الفاتورة على تيليجرام. ارفع وصل الدفع بأمان من نفس المحادثة.",
+      },
+    },
+    {
+      id: "production",
+      title: { en: "Production", ar: "التنفيذ" },
+      body: {
+        en: "Design, content, and media teams take over — each department gets its own ClickUp task.",
+        ar: "يتولى فريق التصميم والمحتوى والإعلام — ولكل قسم مهمة مستقلة على كليك أب.",
+      },
+    },
+    {
+      id: "delivery",
+      title: { en: "Delivery & review", ar: "التسليم والمراجعة" },
+      body: {
+        en: "Final files land on Telegram. Request a revision or sign off when the work meets your standard.",
+        ar: "الملفات النهائية تصل على تيليجرام. اطلب تعديلاً أو اعتماداً عندما يلبي العمل معيارك.",
+      },
+    },
+  ],
+};
+
 export const projects = {
   kicker: { en: "Our work", ar: "أعمالنا" },
   title: { en: "Selected projects", ar: "مشاريع مختارة" },
@@ -244,7 +305,7 @@ export const projects = {
       },
       images: [
         {
-          src: "/photo/projects/p10_event_stage_01.png",
+          src: "/photo/projects/p10_event_stage_01.webp",
           featured: true,
           span: "md" as const,
           alt: {
@@ -253,14 +314,14 @@ export const projects = {
           },
         },
         {
-          src: "/photo/projects/p11_event_stage_02.png",
+          src: "/photo/projects/p11_event_stage_02.webp",
           alt: {
             en: "Second event stage and seating arrangement",
             ar: "منصة فعالية ثانية وتنظيم المقاعد",
           },
         },
         {
-          src: "/photo/projects/p12_exhibition_booth_design.png",
+          src: "/photo/projects/p12_exhibition_booth_design.webp",
           featured: true,
           span: "sm" as const,
           alt: {
@@ -269,14 +330,14 @@ export const projects = {
           },
         },
         {
-          src: "/photo/projects/p13_booth_projects_01.png",
+          src: "/photo/projects/p13_booth_projects_01.webp",
           alt: {
             en: "Exhibition booth projects",
             ar: "مشاريع بوثات المعارض",
           },
         },
         {
-          src: "/photo/projects/p14_booth_projects_02.png",
+          src: "/photo/projects/p14_booth_projects_02.webp",
           alt: {
             en: "Further exhibition booth work",
             ar: "أعمال بوثات إضافية",
@@ -296,7 +357,7 @@ export const projects = {
       },
       images: [
         {
-          src: "/photo/projects/p16_logos.png",
+          src: "/photo/projects/p16_logos.webp",
           featured: true,
           span: "lg" as const,
           alt: {
@@ -305,35 +366,35 @@ export const projects = {
           },
         },
         {
-          src: "/photo/projects/p17_company_profile_01.png",
+          src: "/photo/projects/p17_company_profile_01.webp",
           alt: {
             en: "Company profile spread",
             ar: "صفحات ملف تعريفي",
           },
         },
         {
-          src: "/photo/projects/p18_company_profile_02.png",
+          src: "/photo/projects/p18_company_profile_02.webp",
           alt: {
             en: "Company profile interior pages",
             ar: "صفحات داخلية من الملف التعريفي",
           },
         },
         {
-          src: "/photo/projects/p19_menu_design.png",
+          src: "/photo/projects/p19_menu_design.webp",
           alt: {
             en: "Menu design",
             ar: "تصميم قائمة",
           },
         },
         {
-          src: "/photo/projects/p20_business_cards.png",
+          src: "/photo/projects/p20_business_cards.webp",
           alt: {
             en: "Business card designs",
             ar: "تصاميم بطاقات أعمال",
           },
         },
         {
-          src: "/photo/projects/p21_visual_identity_application_01.png",
+          src: "/photo/projects/p21_visual_identity_application_01.webp",
           featured: true,
           span: "md" as const,
           alt: {
@@ -342,35 +403,35 @@ export const projects = {
           },
         },
         {
-          src: "/photo/projects/p22_visual_identity_application_02.png",
+          src: "/photo/projects/p22_visual_identity_application_02.webp",
           alt: {
             en: "Visual identity applications, set two",
             ar: "تطبيقات الهوية البصرية، المجموعة الثانية",
           },
         },
         {
-          src: "/photo/projects/p23_visual_identity_application_03.png",
+          src: "/photo/projects/p23_visual_identity_application_03.webp",
           alt: {
             en: "Visual identity applications, set three",
             ar: "تطبيقات الهوية البصرية، المجموعة الثالثة",
           },
         },
         {
-          src: "/photo/projects/p24_visual_identity_application_04.png",
+          src: "/photo/projects/p24_visual_identity_application_04.webp",
           alt: {
             en: "Visual identity applications, set four",
             ar: "تطبيقات الهوية البصرية، المجموعة الرابعة",
           },
         },
         {
-          src: "/photo/projects/p25_packaging_01.png",
+          src: "/photo/projects/p25_packaging_01.webp",
           alt: {
             en: "Packaging design, set one",
             ar: "تصميم تغليف، المجموعة الأولى",
           },
         },
         {
-          src: "/photo/projects/p26_packaging_02.png",
+          src: "/photo/projects/p26_packaging_02.webp",
           alt: {
             en: "Packaging design, set two",
             ar: "تصميم تغليف، المجموعة الثانية",
@@ -390,7 +451,7 @@ export const projects = {
       },
       images: [
         {
-          src: "/photo/projects/p28_social_posts_01.png",
+          src: "/photo/projects/p28_social_posts_01.webp",
           featured: true,
           span: "sm" as const,
           alt: {
@@ -399,28 +460,28 @@ export const projects = {
           },
         },
         {
-          src: "/photo/projects/p29_social_posts_02.png",
+          src: "/photo/projects/p29_social_posts_02.webp",
           alt: {
             en: "Social media posts, set two",
             ar: "منشورات سوشل ميديا، المجموعة الثانية",
           },
         },
         {
-          src: "/photo/projects/p30_social_posts_03.png",
+          src: "/photo/projects/p30_social_posts_03.webp",
           alt: {
             en: "Social media posts, set three",
             ar: "منشورات سوشل ميديا، المجموعة الثالثة",
           },
         },
         {
-          src: "/photo/projects/p31_motion_examples.png",
+          src: "/photo/projects/p31_motion_examples.webp",
           alt: {
             en: "Motion design examples",
             ar: "أمثلة تحريك",
           },
         },
         {
-          src: "/photo/projects/p32_photography_montage.png",
+          src: "/photo/projects/p32_photography_montage.webp",
           featured: true,
           span: "lg" as const,
           alt: {
@@ -429,28 +490,28 @@ export const projects = {
           },
         },
         {
-          src: "/photo/projects/p33_photography_examples.png",
+          src: "/photo/projects/p33_photography_examples.webp",
           alt: {
             en: "Photography examples",
             ar: "أمثلة تصوير",
           },
         },
         {
-          src: "/photo/projects/p35_social_media_high_views.png",
+          src: "/photo/projects/p35_social_media_high_views.webp",
           alt: {
             en: "High-reach social media work",
             ar: "أعمال سوشل عالية المشاهدة",
           },
         },
         {
-          src: "/photo/projects/p36_paid_campaigns_tiktok_meta.png",
+          src: "/photo/projects/p36_paid_campaigns_tiktok_meta.webp",
           alt: {
             en: "TikTok and Meta paid campaigns",
             ar: "حملات ممولة على تيك توك وميتا",
           },
         },
         {
-          src: "/photo/projects/p37_google_ads.png",
+          src: "/photo/projects/p37_google_ads.webp",
           alt: {
             en: "Google Ads work",
             ar: "أعمال إعلانات جوجل",
@@ -470,7 +531,7 @@ export const projects = {
       },
       images: [
         {
-          src: "/photo/projects/p39_promotional_gifts.png",
+          src: "/photo/projects/p39_promotional_gifts.webp",
           featured: true,
           span: "sm" as const,
           alt: {
@@ -479,7 +540,7 @@ export const projects = {
           },
         },
         {
-          src: "/photo/projects/p41_roadside_advertisement.png",
+          src: "/photo/projects/p41_roadside_advertisement.webp",
           alt: {
             en: "Roadside advertisements",
             ar: "إعلانات طرقية",
@@ -499,7 +560,7 @@ export const projects = {
       },
       images: [
         {
-          src: "/photo/projects/p43_website_01.png",
+          src: "/photo/projects/p43_website_01.webp",
           featured: true,
           span: "lg" as const,
           alt: {
@@ -508,7 +569,7 @@ export const projects = {
           },
         },
         {
-          src: "/photo/projects/p44_website_02.png",
+          src: "/photo/projects/p44_website_02.webp",
           alt: {
             en: "Website design, second project",
             ar: "تصميم موقع، المشروع الثاني",
@@ -528,7 +589,7 @@ export const projects = {
       },
       images: [
         {
-          src: "/photo/projects/p47_dashboard_01.png",
+          src: "/photo/projects/p47_dashboard_01.webp",
           featured: true,
           span: "md" as const,
           alt: {
@@ -537,7 +598,7 @@ export const projects = {
           },
         },
         {
-          src: "/photo/projects/p48_dashboard_02.png",
+          src: "/photo/projects/p48_dashboard_02.webp",
           alt: {
             en: "Financial analysis dashboard, second board",
             ar: "لوحة تحليل مالي، اللوحة الثانية",
@@ -557,14 +618,14 @@ export const finance = {
   },
   images: [
     {
-      src: "/photo/projects/p47_dashboard_01.png",
+      src: "/photo/projects/p47_dashboard_01.webp",
       alt: {
         en: "Financial analysis dashboard, first board",
         ar: "لوحة تحليل مالي، اللوحة الأولى",
       },
     },
     {
-      src: "/photo/projects/p48_dashboard_02.png",
+      src: "/photo/projects/p48_dashboard_02.webp",
       alt: {
         en: "Financial analysis dashboard, second board",
         ar: "لوحة تحليل مالي، اللوحة الثانية",

@@ -14,11 +14,11 @@ export function About() {
   return (
     <section
       id="about"
-      className="relative isolate overflow-hidden bg-[var(--brand-purple-deep)] py-24 text-[var(--brand-cream)] md:py-32"
+      className="relative isolate overflow-hidden bg-[var(--brand-purple-deep)] py-16 text-[var(--brand-cream)] md:py-24 lg:py-32"
     >
       <div className="absolute inset-0 overflow-hidden">
         <Image
-          src={withBasePath("/photo/about-us.png")}
+          src={withBasePath("/photo/about-us.webp")}
           alt=""
           fill
           sizes="100vw"

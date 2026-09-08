@@ -16,6 +16,15 @@ type FlatImage = ProjectImage & {
 
 const FILTERS = ["all", ...projects.items.map((item) => item.id)] as const;
 const FILTER_PREVIEW = 6;
+const ALL_BACKDROP = "/photo/hero-section-background.webp";
+const CATEGORY_BACKDROPS: Record<string, string> = {
+  events: "/photo/projects/p10_event_stage_01.webp",
+  identity: "/photo/projects/p21_visual_identity_application_01.webp",
+  media: "/photo/projects/p32_photography_montage.webp",
+  promo: "/photo/projects/p41_roadside_advertisement.webp",
+  digital: "/photo/projects/p43_website_01.png",
+  finance: "/photo/financial-analysis-growth-dashboard.webp",
+};
 const PREVIEW_SPANS: Record<string, "md" | "lg" | "half"> = {
   events: "md",
   identity: "lg",
@@ -25,11 +34,21 @@ const PREVIEW_SPANS: Record<string, "md" | "lg" | "half"> = {
   finance: "half",
 };
 
+function backdropFor(filter: string) {
+  if (filter === "all") return ALL_BACKDROP;
+  const item = projects.items.find((entry) => entry.id === filter);
+  const cover = item?.images.find((image) => image.featured) ?? item?.images[0];
+  return CATEGORY_BACKDROPS[filter] ?? cover?.src ?? ALL_BACKDROP;
+}
+
 export function Projects() {
   const { t, locale } = useLanguage();
   const [filter, setFilter] = useState<string>("all");
   const [expanded, setExpanded] = useState(false);
   const [active, setActive] = useState<number | null>(null);
+  const backdropSrc = backdropFor(filter);
+  const [visibleBackdrop, setVisibleBackdrop] = useState(backdropSrc);
+  const [incomingBackdrop, setIncomingBackdrop] = useState<string | null>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const lastFocus = useRef<HTMLElement | null>(null);
   const gridRef = useRef<HTMLDivElement>(null);
@@ -105,6 +124,22 @@ export function Projects() {
   }, [filter, expanded]);
 
   useEffect(() => {
+    if (backdropSrc === visibleBackdrop) {
+      setIncomingBackdrop(null);
+      return;
+    }
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) {
+      setVisibleBackdrop(backdropSrc);
+      setIncomingBackdrop(null);
+      return;
+    }
+
+    setIncomingBackdrop(backdropSrc);
+  }, [backdropSrc, visibleBackdrop]);
+
+  useEffect(() => {
     if (active === null) return;
 
     const onKey = (event: KeyboardEvent) => {
@@ -157,13 +192,48 @@ export function Projects() {
   return (
     <section
       id="projects"
-      className="relative overflow-hidden bg-[var(--brand-purple-deep)] py-24 text-[var(--brand-cream)] md:py-32"
+      className="relative isolate overflow-hidden bg-[var(--brand-purple-deep)] py-16 text-[var(--brand-cream)] md:py-24 lg:py-32"
     >
+      <div aria-hidden className="projects-backdrop pointer-events-none absolute inset-0">
+        <Image
+          src={withBasePath(visibleBackdrop)}
+          alt=""
+          fill
+          sizes="100vw"
+          className="projects-backdrop-media object-cover"
+        />
+        {incomingBackdrop ? (
+          <Image
+            src={withBasePath(incomingBackdrop)}
+            alt=""
+            fill
+            sizes="100vw"
+            className="projects-backdrop-media projects-backdrop-incoming object-cover"
+            onLoad={() => {
+              setVisibleBackdrop(incomingBackdrop);
+              setIncomingBackdrop(null);
+            }}
+            onError={() => {
+              setVisibleBackdrop(incomingBackdrop);
+              setIncomingBackdrop(null);
+            }}
+          />
+        ) : null}
+      </div>
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[rgb(10_6_24/0.62)]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgb(10_6_24/0.28)_0%,transparent_26%,transparent_58%,rgb(10_6_24/0.5)_100%)]"
+      />
+
       {projects.items.map((item) => (
         <span key={item.id} id={`project-${item.id}`} className="sr-only" />
       ))}
 
-      <div className="mx-auto w-[min(1280px,calc(100%-1.5rem))]">
+      <div className="relative z-10 mx-auto w-[min(1280px,calc(100%-1.5rem))]">
         <div className="mb-10 flex flex-col gap-8 lg:mb-12 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-xl text-start">
             <span aria-hidden className="mb-3 block h-px w-9 bg-[var(--brand-orange)]" />
@@ -295,7 +365,7 @@ export function Projects() {
           role="dialog"
           aria-modal="true"
           aria-labelledby={titleId}
-          className="fixed inset-0 z-[90] flex items-center justify-center bg-[rgb(10_6_24/0.9)] p-4 md:p-8"
+          className="fixed inset-0 z-[90] flex items-center justify-center bg-[rgb(10_6_24/0.9)] p-3 sm:p-4 md:p-8"
           onClick={close}
         >
           <div

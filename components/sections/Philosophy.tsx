@@ -11,7 +11,7 @@ export function Philosophy() {
   const { t, locale } = useLanguage();
 
   return (
-    <section id="philosophy" className="relative bg-[var(--brand-off-white)] py-24 md:py-32">
+    <section id="philosophy" className="relative bg-[var(--brand-off-white)] py-16 md:py-24 lg:py-32">
       <Shell>
         <Reveal className="mb-16 max-w-2xl">
           <SectionHeading kicker={philosophy.kicker} title={philosophy.title} />
