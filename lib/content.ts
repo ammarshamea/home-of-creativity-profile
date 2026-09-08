@@ -42,37 +42,10 @@ export const about = {
     en: "Forget aesthetic fluff and sweet talk. We are not your typical agency; we are brand architects. We dissect your business, eliminate the clutter, and rebuild it into a powerhouse driven by hard numbers and defined by visual prestige. In an era of endless noise and generic content, we stand for Premium Minimalism and direct, human-centric marketing. We do not yell to be seen. We strategically position your brand so the industry leans in and listens.",
     ar: "نحن لسنا وكالة إعلانات أخرى تبيعك تصاميم جميلة ومنمّقة وكلاماً معسولاً. نحن مهندسو هوية تجارية. نأخذ عملك لنجرّده من العشوائية ونعيده إلى السوق كعلامة تجارية رائدة ذات هيبة بصرية مبنية على أرقام وحقائق صلبة لا تقبل الجدل. في عالم مليء بالضجيج والمحتوى المعلّب، نحن نؤمن بالفخامة البسيطة Premium Minimalism والتسويق الإنساني المباشر. لا نصرخ لجذب الانتباه، بل نصنع لعملائنا تموضعاً ذكياً يجعل السوق ينصت إليهم باحترام.",
   },
-  highlight: { en: "Premium Minimalism", ar: "الفخامة البسيطة" },
   imageAlt: {
     en: "A lone figure at the far end of a vast, geometrically lit hall",
     ar: "شخص وحيد في نهاية قاعة هندسية واسعة مضاءة",
   },
-  pillars: [
-    {
-      id: "architecture",
-      title: { en: "Architecture first", ar: "العمارة أولاً" },
-      body: {
-        en: "Systems before decoration. Every mark, room, and campaign holds a single structure.",
-        ar: "الأنظمة قبل الزخرفة. كل علامة وقاعة وحملة تحمل بنية واحدة.",
-      },
-    },
-    {
-      id: "prestige",
-      title: { en: "Visual prestige", ar: "هيبة بصرية" },
-      body: {
-        en: "Quiet surfaces. Precise type. Presence that does not need to raise its voice.",
-        ar: "أسطح هادئة. حروف دقيقة. حضور لا يحتاج إلى رفع الصوت.",
-      },
-    },
-    {
-      id: "human",
-      title: { en: "Human marketing", ar: "تسويق إنساني" },
-      body: {
-        en: "Direct language. No canned noise. A conversation the market can respect.",
-        ar: "لغة مباشرة. بلا ضجيج معلّب. حوار يحترمه السوق.",
-      },
-    },
-  ],
 };
 
 export const philosophy = {
